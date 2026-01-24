@@ -8,8 +8,12 @@ import applicationRoutes from "./routes/applicationRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import path from "path";
 import cors from "cors";
+import { fileURLToPath } from "url";
 
 config();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 
@@ -40,7 +44,6 @@ app.use("/api/applications", applicationRoutes);
 app.use("/api/admin", adminRoutes);
 
 const frontendPath = path.join(__dirname, "..", "frontend", "dist");
-console.log("Checking frontend path:", frontendPath);
 app.use(express.static(frontendPath));
 
 app.get("*", (req, res) => {
