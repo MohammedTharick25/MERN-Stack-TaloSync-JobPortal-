@@ -39,10 +39,18 @@ app.use("/api/applications", applicationRoutes);
 
 app.use("/api/admin", adminRoutes);
 
+const frontendPath = path.join(__dirname, "..", "frontend", "dist");
+console.log("Checking frontend path:", frontendPath);
+app.use(express.static(frontendPath));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(frontendPath, "index.html"));
+});
+
 mongoose
   .connect(process.env.MONGODB_URI)
   .then(() =>
-    app.listen(process.env.PORT || 3000, () => {
+    app.listen(process.env.PORT || 4000, () => {
       console.log(
         `MongoDB is Connected && Server is running on port ${process.env.PORT || 3000}`,
       );
