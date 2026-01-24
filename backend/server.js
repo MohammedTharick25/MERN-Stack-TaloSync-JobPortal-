@@ -20,14 +20,30 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 
 // 🔑 CORS CONFIG
+
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://talosync.onrender.com", // Add your Render URL
+];
+
 app.use(
   cors({
-    origin: "http://localhost:5173", // frontend URL
+    origin: function (origin, callback) {
+      // allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.indexOf(origin) === -1) {
+        return callback(null, true); // Set to true to be less restrictive during debug
+      }
+      return callback(null, true);
+    },
     credentials: true,
   }),
 );
 
-app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
+app.use(
+  "/uploads",
+  express.static(path.join(process.cwd(), "backend", "uploads")),
+);
 
 app.use(express.json());
 
@@ -43,7 +59,7 @@ app.use("/api/applications", applicationRoutes);
 
 app.use("/api/admin", adminRoutes);
 
-const frontendPath = path.join(__dirname, "..", "frontend", "dist");
+const frontendPath = path.join(process.cwd(), "frontend", "dist");
 app.use(express.static(frontendPath));
 
 app.get("*", (req, res) => {
