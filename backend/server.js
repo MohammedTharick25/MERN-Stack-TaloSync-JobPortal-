@@ -15,9 +15,6 @@ const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 
-const frontendBuildPath = path.join(__dirname, "../frontend/dist");
-app.use(express.static(frontendBuildPath));
-
 // 🔑 CORS CONFIG
 app.use(
   cors({
@@ -41,10 +38,6 @@ app.use("/api/jobs", jobRoutes);
 app.use("/api/applications", applicationRoutes);
 
 app.use("/api/admin", adminRoutes);
-
-app.get("*", (req, res) => {
-  res.sendFile(path.join(frontendBuildPath, "index.html"));
-});
 
 mongoose
   .connect(process.env.MONGODB_URI)
