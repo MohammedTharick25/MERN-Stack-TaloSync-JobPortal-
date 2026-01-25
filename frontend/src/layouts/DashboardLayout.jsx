@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import ThemeToggle from "../components/common/ThemeToggle";
+import { getImageUrl } from "../utils/getImageUrl";
 
 const DashboardLayout = ({ children }) => {
   const { user, logout } = useAuth();
@@ -10,11 +11,7 @@ const DashboardLayout = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   // const BACKEND_URL = "http://localhost:4000";
 
-  const profileImg = user?.profile?.profilePhoto
-    ? user.profile.profilePhoto.startsWith("http")
-      ? user.profile.profilePhoto // Use as is if it's already a full URL (like Cloudinary)
-      : `/${user.profile.profilePhoto.replace(/^\//, "")}` // Ensure it starts with /uploads...
-    : `https://ui-avatars.com/api/?name=${user?.fullName}`;
+  const profileImg = getImageUrl(user?.profile?.profilePhoto, user?.fullName);
 
   // Close sidebar when route changes (mobile)
   useEffect(() => {
