@@ -12,9 +12,12 @@ import {
 import { protect } from "../middleware/authMiddleware.js";
 import { authorizeRoles } from "../middleware/roleMiddleware.js";
 import upload from "../middleware/multer.js";
-import path from "path";
 
 const router = express.Router();
+
+// Public routes
+router.post("/register", registerUser);
+router.post("/login", loginUser);
 
 router.post(
   "/upload-resume",
@@ -36,9 +39,6 @@ router.post(
 router.put("/profile/update", protect, updateProfile);
 // The resume upload route (make sure you have multer setup)
 router.post("/profile/resume", protect, upload.single("resume"), uploadResume);
-
-router.post("/register", registerUser);
-router.post("/login", loginUser);
 
 // Candidate-only route
 router.get(

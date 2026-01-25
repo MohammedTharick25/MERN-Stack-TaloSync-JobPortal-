@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import api from "../../api/axios";
 import DashboardLayout from "../../layouts/DashboardLayout";
 import { Link } from "react-router-dom";
+import { getImageUrl } from "../../utils/getImageUrl";
 
 const SavedJobs = () => {
   const [savedJobs, setSavedJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [viewType, setViewType] = useState("grid"); // 'grid' or 'list'
-  const BACKEND_URL = "http://localhost:4000";
 
   useEffect(() => {
     const fetchSaved = async () => {
@@ -101,7 +101,7 @@ const SavedJobs = () => {
                 <div className="w-12 h-12 bg-gray-50 dark:bg-gray-700 rounded-2xl flex items-center justify-center overflow-hidden border border-gray-100 dark:border-gray-600 shadow-sm mb-2">
                   {job.company?.logo ? (
                     <img
-                      src={`${BACKEND_URL}/${job.company.logo}`}
+                      src={getImageUrl(job.company?.logo, job.company?.name)}
                       alt={job.company?.name}
                       className="w-full h-full object-cover"
                     />

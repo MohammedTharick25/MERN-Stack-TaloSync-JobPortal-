@@ -4,10 +4,10 @@ import { useAuth } from "../../context/AuthContext"; // Import useAuth
 import DashboardLayout from "../../layouts/DashboardLayout";
 import StatCard from "../../components/cards/StatCard";
 import { Link, useNavigate } from "react-router-dom";
+import { getImageUrl } from "../../utils/getImageUrl";
 
 const CandidateDashboard = () => {
   const { user } = useAuth(); // Get user details for personalized greeting
-  const BACKEND_URL = "http://localhost:4000";
   const [stats, setStats] = useState({ total: 0, accepted: 0, rejected: 0 });
   const [jobs, setJobs] = useState([]);
   const navigate = useNavigate();
@@ -86,7 +86,7 @@ const CandidateDashboard = () => {
                 <div className="w-14 h-14 bg-gray-50 dark:bg-gray-700 rounded-xl flex items-center justify-center overflow-hidden border border-gray-100 dark:border-gray-600 shadow-sm">
                   {job.company?.logo ? (
                     <img
-                      src={`${BACKEND_URL}/${job.company.logo}`}
+                      src={getImageUrl(job.company?.logo, job.company?.name)}
                       alt={job.company?.name}
                       className="w-full h-full object-cover"
                     />

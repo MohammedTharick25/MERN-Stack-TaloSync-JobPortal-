@@ -4,12 +4,12 @@ import api from "../../api/axios";
 import { useAuth } from "../../context/AuthContext";
 import DashboardLayout from "../../layouts/DashboardLayout";
 import { toast } from "react-toastify";
+import { getImageUrl } from "../../utils/getImageUrl";
 
 const JobDetail = () => {
   const { id } = useParams();
   const { user, updateUser } = useAuth();
   const navigate = useNavigate();
-  const BACKEND_URL = "http://localhost:4000";
 
   const [job, setJob] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -126,8 +126,8 @@ const JobDetail = () => {
               <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gray-50 dark:bg-gray-700 rounded-2xl flex items-center justify-center overflow-hidden border border-gray-100 dark:border-gray-600">
                 {job.company?.logo ? (
                   <img
-                    src={`${BACKEND_URL}/${job.company.logo}`}
-                    alt=""
+                    src={getImageUrl(job.company?.logo, job.company?.name)}
+                    alt={job.company?.name}
                     className="w-full h-full object-cover"
                   />
                 ) : (
