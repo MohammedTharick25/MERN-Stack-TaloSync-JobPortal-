@@ -91,7 +91,7 @@ const Profile = () => {
   // Determine which image to show
 
   const displayPhoto =
-    photoPreview || getImageUrl(user.profile?.profilePhoto, user.fullName);
+    photoPreview || getImageUrl(user?.profile?.profilePhoto, user?.fullName);
 
   return (
     <DashboardLayout>
