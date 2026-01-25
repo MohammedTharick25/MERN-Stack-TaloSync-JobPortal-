@@ -6,7 +6,6 @@ import { toast } from "react-toastify";
 
 const AdminProfile = () => {
   const { user, updateUser } = useAuth();
-  // const BACKEND_URL = "http://localhost:4000";
 
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({

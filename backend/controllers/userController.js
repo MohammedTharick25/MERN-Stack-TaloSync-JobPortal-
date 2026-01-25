@@ -138,7 +138,9 @@ export const uploadResume = async (req, res) => {
 
     const user = await User.findById(req.user._id);
 
-    user.profile.resume = req.file.path; // Cloudinary URL
+    const resumeUrl = `/${req.file.path.replace(/\\/g, "/")}`;
+
+    user.profile.resume = resumeUrl;
     user.profile.resumeOriginalName = req.file.originalname;
 
     await user.save();
@@ -194,7 +196,7 @@ export const updateProfilePhoto = async (req, res) => {
     const user = await User.findById(req.user._id);
 
     // FIX: Convert backslashes to forward slashes for the URL
-    const photoUrl = req.file.path.replace(/\\/g, "/");
+    const photoUrl = `/${req.file.path.replace(/\\/g, "/")}`;
 
     user.profile.profilePhoto = photoUrl;
     await user.save();

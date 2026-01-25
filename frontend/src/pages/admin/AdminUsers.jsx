@@ -2,9 +2,9 @@ import { useEffect, useState, useMemo } from "react";
 import api from "../../api/axios";
 import DashboardLayout from "../../layouts/DashboardLayout";
 import { toast } from "react-toastify";
+import { getImageUrl } from "../../utils/getImageUrl";
 
 const AdminUsers = () => {
-  const BACKEND_URL = "http://localhost:4000";
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("all");
@@ -155,13 +155,9 @@ const AdminUsers = () => {
               >
                 <div className="flex items-center gap-3 mb-4">
                   <img
-                    src={
-                      u.profile?.profilePhoto
-                        ? `${BACKEND_URL}/${u.profile.profilePhoto}`
-                        : `https://ui-avatars.com/api/?name=${u.fullName}`
-                    }
-                    className="w-12 h-12 rounded-full border dark:border-gray-600"
-                    alt=""
+                    src={getImageUrl(u.profile?.profilePhoto, u.fullName)}
+                    className="w-12 h-12 rounded-full border"
+                    alt={u.fullName}
                   />
                   <div className="flex-1 min-w-0">
                     <p className="font-bold text-gray-900 dark:text-white truncate">
@@ -240,13 +236,9 @@ const AdminUsers = () => {
                     <td className="p-4">
                       <div className="flex items-center gap-3">
                         <img
-                          src={
-                            u.profile?.profilePhoto
-                              ? `${BACKEND_URL}/${u.profile.profilePhoto}`
-                              : `https://ui-avatars.com/api/?name=${u.fullName}`
-                          }
-                          className="w-10 h-10 rounded-full object-cover"
-                          alt=""
+                          src={getImageUrl(u.profile?.profilePhoto, u.fullName)}
+                          className="w-12 h-12 rounded-full border"
+                          alt={u.fullName}
                         />
                         <div>
                           <p className="font-bold text-gray-900 dark:text-white text-sm">
