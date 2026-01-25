@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 
 const AdminProfile = () => {
   const { user, updateUser } = useAuth();
-  const BACKEND_URL = "http://localhost:4000";
+  // const BACKEND_URL = "http://localhost:4000";
 
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -67,7 +67,9 @@ const AdminProfile = () => {
   const displayPhoto =
     photoPreview ||
     (user.profile?.profilePhoto
-      ? `${BACKEND_URL}/${user.profile.profilePhoto}`
+      ? user.profile.profilePhoto.startsWith("http")
+        ? user.profile.profilePhoto
+        : `/${user.profile.profilePhoto.replace(/^\//, "")}`
       : `https://ui-avatars.com/api/?name=${user.fullName}&background=000&color=fff`);
 
   return (

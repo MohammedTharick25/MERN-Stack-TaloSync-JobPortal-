@@ -40,10 +40,7 @@ app.use(
 );
 
 // Serve uploads folder (using process.cwd() to ensure it finds it from root)
-app.use(
-  "/uploads",
-  express.static(path.join(process.cwd(), "backend", "uploads")),
-);
+app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
 // API ROUTES
 app.use("/api/users", userRoutes);

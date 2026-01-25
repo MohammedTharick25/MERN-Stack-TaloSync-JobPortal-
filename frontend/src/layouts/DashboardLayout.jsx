@@ -8,16 +8,18 @@ const DashboardLayout = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const BACKEND_URL = "http://localhost:4000";
+  // const BACKEND_URL = "http://localhost:4000";
+
+  const profileImg = user?.profile?.profilePhoto
+    ? user.profile.profilePhoto.startsWith("http")
+      ? user.profile.profilePhoto // Use as is if it's already a full URL (like Cloudinary)
+      : `/${user.profile.profilePhoto.replace(/^\//, "")}` // Ensure it starts with /uploads...
+    : `https://ui-avatars.com/api/?name=${user?.fullName}`;
 
   // Close sidebar when route changes (mobile)
   useEffect(() => {
     setIsSidebarOpen(false);
   }, [location]);
-
-  const profileImg = user?.profile?.profilePhoto
-    ? `${BACKEND_URL}/${user.profile.profilePhoto}`
-    : `https://ui-avatars.com/api/?name=${user?.fullName}`;
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
