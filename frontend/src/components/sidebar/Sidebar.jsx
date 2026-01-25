@@ -49,7 +49,7 @@ const Sidebar = () => {
               </NavLink>
 
               {/* Improved Check: Look for company directly or inside profile */}
-              {!(user?.company || user?.profile?.company) ? (
+              {user?.company ? (
                 <NavLink
                   to="/employer/register-company"
                   className="block p-2 text-orange-600 font-bold border border-orange-600 rounded mt-4 animate-pulse"
@@ -103,7 +103,7 @@ const Sidebar = () => {
                   `flex items-center gap-3 p-3 rounded-xl transition-all ${isActive ? "bg-blue-600 text-white shadow-lg" : "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700"}`
                 }
               >
-                <span>💼</span> Manage Companies
+                <span>🏢</span> Manage Companies
               </NavLink>
             </>
           )}

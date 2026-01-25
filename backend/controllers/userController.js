@@ -74,7 +74,7 @@ export const loginUser = async (req, res) => {
     }
 
     // 1. Find user and populate the company reference
-    const user = await User.findOne({ email }).populate("profile.company");
+    const user = await User.findOne({ email }).populate("company");
 
     if (!user) {
       return res.status(401).json({ message: "Invalid credentials" });
@@ -101,7 +101,7 @@ export const loginUser = async (req, res) => {
 
     // 4. SAFE EXTRACTION of Company ID
     // If profile or company is missing, we set it to null instead of crashing
-    let companyId = null;
+    let companyId = user.company?._id || user.company || null;
     if (user.profile && user.profile.company) {
       // If populated, company is an object, so we take ._id
       // If not populated, company is just the ID string
@@ -163,7 +163,7 @@ export const updateProfile = async (req, res) => {
     const userId = req.user._id;
 
     // Use .populate("profile.company") to ensure the ID is returned
-    let user = await User.findById(userId).populate("profile.company");
+    let user = await User.findById(userId).populate("company");
     if (!user) return res.status(404).json({ message: "User not found" });
 
     if (fullName) user.fullName = fullName;
@@ -185,7 +185,7 @@ export const updateProfile = async (req, res) => {
         role: user.role,
         profile: user.profile,
         // Make sure company ID is explicitly sent back!
-        company: user.profile.company?._id || user.profile.company || null,
+        company: user.company?._id || user.company || null,
       },
     });
   } catch (error) {
