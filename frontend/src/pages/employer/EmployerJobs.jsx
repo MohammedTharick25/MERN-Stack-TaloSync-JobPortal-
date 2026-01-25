@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import api from "../../api/axios";
 import DashboardLayout from "../../layouts/DashboardLayout";
+import { getImageUrl } from "../../utils/getImageUrl";
 
 const EmployerJobs = () => {
   const [jobs, setJobs] = useState([]);
@@ -57,6 +58,13 @@ const EmployerJobs = () => {
               key={job._id}
               className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 hover:shadow-md transition-shadow"
             >
+              <div className="w-14 h-14 bg-gray-50 dark:bg-gray-700 rounded-xl flex items-center justify-center overflow-hidden border dark:border-gray-600 shrink-0 shadow-sm">
+                <img
+                  src={getImageUrl(job.company?.logo, job.company?.name)}
+                  className="w-full h-full object-cover"
+                  alt=""
+                />
+              </div>
               <div>
                 <h3 className="text-lg font-bold dark:text-white">
                   {job.title}
