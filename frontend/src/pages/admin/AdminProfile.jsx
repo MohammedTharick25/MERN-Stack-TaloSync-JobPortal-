@@ -3,6 +3,7 @@ import { useAuth } from "../../context/AuthContext";
 import api from "../../api/axios";
 import DashboardLayout from "../../layouts/DashboardLayout";
 import { toast } from "react-toastify";
+import { getImageUrl } from "../../utils/getImageUrl";
 
 const AdminProfile = () => {
   const { user, updateUser } = useAuth();
@@ -65,11 +66,13 @@ const AdminProfile = () => {
 
   const displayPhoto =
     photoPreview ||
-    (user.profile?.profilePhoto
-      ? user.profile.profilePhoto.startsWith("http")
-        ? user.profile.profilePhoto
-        : `/${user.profile.profilePhoto.replace(/^\//, "")}`
-      : `https://ui-avatars.com/api/?name=${user.fullName}&background=000&color=fff`);
+    getImageUrl(
+      user.profile?.profilePhoto
+        ? user.profile.profilePhoto.startsWith("http")
+          ? user.profile.profilePhoto
+          : `/${user.profile.profilePhoto.replace(/^\//, "")}`
+        : `https://ui-avatars.com/api/?name=${user.fullName}&background=000&color=fff`,
+    );
 
   return (
     <DashboardLayout>
