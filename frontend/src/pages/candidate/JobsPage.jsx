@@ -4,9 +4,9 @@ import { useAuth } from "../../context/AuthContext";
 import DashboardLayout from "../../layouts/DashboardLayout";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import { getImageUrl } from "../../utils/getImageUrl";
 
 const JobsPage = () => {
-  const BACKEND_URL = "http://localhost:4000";
   const { user, updateUser } = useAuth();
   const [jobs, setJobs] = useState([]);
 
@@ -263,7 +263,7 @@ const JobsPage = () => {
                 <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-2xl flex items-center justify-center overflow-hidden mb-4 border border-gray-100 dark:border-gray-700">
                   {job.company?.logo ? (
                     <img
-                      src={`${BACKEND_URL}/${job.company.logo}`}
+                      src={getImageUrl(job.company?.logo, job.company?.name)}
                       alt={job.company?.name}
                       className="w-full h-full object-cover"
                     />

@@ -3,10 +3,10 @@ import { useAuth } from "../../context/AuthContext";
 import api from "../../api/axios";
 import DashboardLayout from "../../layouts/DashboardLayout";
 import { toast } from "react-toastify";
+import { getImageUrl } from "../../utils/getImageUrl";
 
 const Profile = () => {
   const { user, updateUser } = useAuth();
-  const BACKEND_URL = "http://localhost:4000";
 
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -90,10 +90,7 @@ const Profile = () => {
 
   // Determine which image to show
   const displayPhoto =
-    photoPreview ||
-    (user.profile?.profilePhoto
-      ? `${BACKEND_URL}/${user.profile.profilePhoto}`
-      : `https://ui-avatars.com/api/?name=${user.fullName}&background=random`);
+    photoPreview || getImageUrl(user.profile?.profilePhoto, user.fullName);
 
   return (
     <DashboardLayout>
@@ -214,11 +211,7 @@ const Profile = () => {
                 <div className="mt-3 flex items-center gap-2">
                   <span className="text-green-600">✔</span>
                   <a
-                    href={
-                      user.profile.resume.startsWith("http")
-                        ? user.profile.resume
-                        : `${BACKEND_URL}/${user.profile.resume}`
-                    }
+                    href={getImageUrl(user.profile.resume)}
                     target="_blank"
                     rel="noreferrer"
                     className="text-sm text-blue-600 font-bold hover:underline"
