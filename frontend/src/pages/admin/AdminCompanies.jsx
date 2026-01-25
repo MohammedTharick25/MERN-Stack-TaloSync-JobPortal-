@@ -3,13 +3,13 @@ import api from "../../api/axios";
 import DashboardLayout from "../../layouts/DashboardLayout";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { getImageUrl } from "../../utils/getImageUrl";
 
 const AdminCompanies = () => {
   const [companies, setCompanies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
-  const BACKEND_URL = "http://localhost:4000";
 
   const fetchCompanies = async () => {
     try {
@@ -105,9 +105,9 @@ const AdminCompanies = () => {
                   >
                     {comp.logo ? (
                       <img
-                        src={`${BACKEND_URL}/${comp.logo}`}
+                        src={getImageUrl(comp.logo, comp.name)}
                         className="w-full h-full object-cover"
-                        alt=""
+                        alt={comp.name}
                       />
                     ) : (
                       <span className="text-blue-600 font-black text-2xl">
@@ -173,9 +173,9 @@ const AdminCompanies = () => {
                         >
                           {comp.logo ? (
                             <img
-                              src={`${BACKEND_URL}/${comp.logo}`}
+                              src={getImageUrl(comp.logo, comp.name)}
                               className="w-full h-full object-cover"
-                              alt=""
+                              alt={comp.name}
                             />
                           ) : (
                             <span className="text-blue-600 font-black text-lg">

@@ -4,10 +4,10 @@ import { useAuth } from "../../context/AuthContext";
 import DashboardLayout from "../../layouts/DashboardLayout";
 import StatCard from "../../components/cards/StatCard";
 import { Link } from "react-router-dom";
+import { getImageUrl } from "../../utils/getImageUrl";
 
 const AdminDashboard = () => {
   const { user } = useAuth();
-  const BACKEND_URL = "http://localhost:4000";
   const [stats, setStats] = useState({
     totalUsers: 0,
     totalJobs: 0,
@@ -121,12 +121,8 @@ const AdminDashboard = () => {
               >
                 <div className="flex items-center gap-3">
                   <img
-                    src={
-                      u.profile?.profilePhoto
-                        ? `${BACKEND_URL}/${u.profile.profilePhoto}`
-                        : `https://ui-avatars.com/api/?name=${u.fullName}&background=random`
-                    }
-                    className="w-10 h-10 rounded-full object-cover border-2 border-white dark:border-gray-600"
+                    src={getImageUrl(u.profile?.profilePhoto, u.fullName)}
+                    className="w-10 h-10 rounded-full object-cover"
                     alt=""
                   />
                   <div>
@@ -181,7 +177,7 @@ const AdminDashboard = () => {
                     <div className="w-10 h-10 bg-blue-50 dark:bg-blue-900/30 rounded-xl flex items-center justify-center font-bold text-blue-600">
                       {job.company?.logo ? (
                         <img
-                          src={`${BACKEND_URL}/${job.company.logo}`}
+                          src={getImageUrl(job.company.logo, job.company.name)}
                           className="w-full h-full object-cover rounded-xl"
                           alt=""
                         />

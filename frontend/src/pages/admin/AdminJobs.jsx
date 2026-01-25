@@ -3,9 +3,9 @@ import api from "../../api/axios";
 import DashboardLayout from "../../layouts/DashboardLayout";
 import { toast } from "react-toastify";
 import { useSearchParams } from "react-router-dom";
+import { getImageUrl } from "../../utils/getImageUrl";
 
 const AdminJobs = () => {
-  const BACKEND_URL = "http://localhost:4000";
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
@@ -117,11 +117,7 @@ const AdminJobs = () => {
                     {job.company?.logo ? (
                       <img
                         // Check if logo is a full URL or a relative path
-                        src={
-                          job.company.logo.startsWith("http")
-                            ? job.company.logo
-                            : `${BACKEND_URL}/${job.company.logo}`
-                        }
+                        src={getImageUrl(job.company?.logo, job.company?.name)}
                         alt={job.company?.name}
                         className="w-full h-full object-cover"
                         onError={(e) => {
