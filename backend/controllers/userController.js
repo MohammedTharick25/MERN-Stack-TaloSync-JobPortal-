@@ -138,6 +138,7 @@ export const uploadResume = async (req, res) => {
 
     const user = await User.findById(req.user._id);
 
+    // Normalize the path
     const resumeUrl = `/${req.file.path.replace(/\\/g, "/")}`;
 
     user.profile.resume = resumeUrl;
@@ -145,7 +146,11 @@ export const uploadResume = async (req, res) => {
 
     await user.save();
 
-    res.status(200).json({ message: "Resume uploaded successfully" });
+    // FIXED: You MUST return the resumeUrl so the frontend can update the state
+    res.status(200).json({
+      message: "Resume uploaded successfully",
+      resumeUrl: resumeUrl, // This matches Profile.jsx
+    });
   } catch (error) {
     console.error("Upload Resume Error:", error);
     res.status(500).json({ message: "Server error" });

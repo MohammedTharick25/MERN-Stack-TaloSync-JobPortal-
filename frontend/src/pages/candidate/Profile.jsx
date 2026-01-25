@@ -46,20 +46,19 @@ const Profile = () => {
     try {
       // 1. Update Profile Text Data
       const res = await api.put("/users/profile/update", formData);
-      let updatedUser = res.data.user;
+      // Get the most up-to-date user object from the first response
+      let latestUser = res.data.user;
 
       // 2. Upload Profile Photo if selected
       if (photo) {
         const photoData = new FormData();
         photoData.append("profilePhoto", photo);
         const photoRes = await api.post("/users/profile/photo", photoData);
-        updatedUser = {
-          ...updatedUser,
-          profile: {
-            ...updatedUser.profile,
-            profilePhoto: photoRes.data.photoUrl,
-          },
-        };
+
+        // Update the object we are working with
+        if (latestUser.profile) {
+          latestUser.profile.profilePhoto = photoRes.data.photoUrl;
+        }
       }
 
       // 3. Upload Resume if selected
@@ -67,19 +66,21 @@ const Profile = () => {
         const resumeData = new FormData();
         resumeData.append("resume", resume);
         const resumeRes = await api.post("/users/profile/resume", resumeData);
-        updatedUser = {
-          ...updatedUser,
-          profile: { ...updatedUser.profile, resume: resumeRes.data.resumeUrl },
-        };
+
+        // Update the object we are working with
+        if (latestUser.profile) {
+          latestUser.profile.resume = resumeRes.data.resumeUrl;
+        }
       }
 
-      // Update Global Auth Context so the Sidebar and Layout update immediately
-      updateUser(updatedUser);
-      toast.success("Profile updated successfully! ✅");
+      // FINAL STEP: Sync the context and localStorage
+      // latestUser now contains: New text info + New photo + New resume
+      updateUser(latestUser);
 
-      // Clear file states
+      toast.success("Profile updated successfully! ✅");
       setPhoto(null);
       setResume(null);
+      setPhotoPreview(null); // Clear preview after save
     } catch (err) {
       console.error(err);
       toast.error(err.response?.data?.message || "Update failed");
