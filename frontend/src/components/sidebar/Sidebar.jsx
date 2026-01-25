@@ -35,6 +35,9 @@ const Sidebar = () => {
               <NavLink to="/candidate/applications/my" className={linkClass}>
                 My Applications
               </NavLink>
+              <NavLink to="/candidate/saved-jobs" className={linkClass}>
+                Saved Jobs
+              </NavLink>
               <NavLink to="/candidate/profile" className={linkClass}>
                 Profile
               </NavLink>
