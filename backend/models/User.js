@@ -35,7 +35,6 @@ const userSchema = new mongoose.Schema(
       skills: [{ type: String }],
       resume: { type: String }, // URL to Cloudinary/S3
       resumeOriginalName: { type: String },
-      company: { type: mongoose.Schema.Types.ObjectId, ref: "Company" },
       profilePhoto: { type: String, default: "" },
       savedJobs: [{ type: mongoose.Schema.Types.ObjectId, ref: "Job" }],
       jobAlerts: { type: Boolean, default: false },

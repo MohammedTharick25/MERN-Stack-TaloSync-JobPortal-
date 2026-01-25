@@ -84,7 +84,9 @@ const EmployerProfile = () => {
     try {
       // 1. Update Personal Info
       const userRes = await api.put("/users/profile/update", personalData);
-      let updatedUser = { ...userRes.data.user };
+
+      // Start with the user object returned from the update
+      let currentUser = { ...userRes.data.user };
 
       // 2. Only Create Company if it doesn't exist
       if (!isCompanyRegistered) {
@@ -97,35 +99,39 @@ const EmployerProfile = () => {
 
         const compRes = await api.post("/companies", companyForm);
 
-        // Link the company ID to the user object for the context
-        updatedUser.company = compRes.data.company._id;
+        // Update our local user object with the new company ID
+        currentUser.company = compRes.data.company._id;
 
-        // Immediately update local state so logo shows up without refresh
-        setCompanyData({
-          ...companyData,
+        setCompanyData((prev) => ({
+          ...prev,
           logo: compRes.data.company.logo,
-        });
+        }));
+      } else {
+        // IF COMPANY IS ALREADY REGISTERED:
+        // Ensure the ID stays in our user object so the Sidebar doesn't break
+        currentUser.company = user.company;
       }
 
-      // 3. Update Profile Photo (if changed)
+      // 3. Update Profile Photo
       if (photo) {
         const photoData = new FormData();
         photoData.append("profilePhoto", photo);
         const photoRes = await api.post("/users/profile/photo", photoData);
-        // Ensure the profile object exists before assignment
-        if (!updatedUser.profile) updatedUser.profile = {};
-        updatedUser.profile.profilePhoto = photoRes.data.photoUrl;
+
+        // Merge the new photo into our currentUser object
+        currentUser.profile.profilePhoto = photoRes.data.photoUrl;
+
+        // IMPORTANT: Keep the company ID!
+        currentUser.company = currentUser.company || user.company;
       }
 
       // 4. Update Global Auth Context
-      updateUser(updatedUser);
+      updateUser(currentUser);
 
-      // Cleanup previews
       setPhotoPreview(null);
       setLogoPreview(null);
       toast.success("Profile updated successfully! ✅");
     } catch (err) {
-      console.error(err);
       toast.error(err.response?.data?.message || "Update failed");
     } finally {
       setLoading(false);
