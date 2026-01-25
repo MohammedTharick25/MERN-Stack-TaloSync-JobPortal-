@@ -1,15 +1,18 @@
-export const getImageUrl = (path, name = "User") => {
-  if (!path)
-    return `https://ui-avatars.com/api/?name=${name}&background=random`;
+import axios from "axios";
 
-  if (path.startsWith("http") && !path.includes("localhost:4000")) {
-    return path;
+const api = axios.create({
+  baseURL:
+    import.meta.env.MODE === "production"
+      ? "/api"
+      : "http://localhost:4000/api",
+});
+
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
   }
+  return config;
+});
 
-  // Remove localhost and fix backslashes for Render (Linux)
-  const cleanPath = path
-    .replace("http://localhost:4000", "")
-    .replace(/\\/g, "/");
-
-  return cleanPath.startsWith("/") ? cleanPath : `/${cleanPath}`;
-};
+export default api;
