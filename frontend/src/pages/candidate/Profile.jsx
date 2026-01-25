@@ -90,11 +90,8 @@ const Profile = () => {
 
   // Determine which image to show
 
-  const displayPhoto = () => {
-    return (
-      photoPreview || getImageUrl(user.profile?.profilePhoto, user.fullName)
-    );
-  };
+  const displayPhoto =
+    photoPreview || getImageUrl(user.profile?.profilePhoto, user.fullName);
 
   return (
     <DashboardLayout>
