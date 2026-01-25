@@ -31,7 +31,7 @@ router.post(
   updateProfilePhoto,
 );
 
-router.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
+// router.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
 router.put("/profile/update", protect, updateProfile);
 // The resume upload route (make sure you have multer setup)
