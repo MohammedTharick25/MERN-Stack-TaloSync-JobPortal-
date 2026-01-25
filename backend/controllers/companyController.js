@@ -4,7 +4,7 @@ import User from "../models/User.js";
 export const createCompany = async (req, res) => {
   try {
     const { name, description, website, location } = req.body;
-    const logo = req.file ? req.file.path : "";
+    const logoUrl = req.file ? req.file.path : "";
 
     // 1. Create the company
     const company = await Company.create({
@@ -12,7 +12,7 @@ export const createCompany = async (req, res) => {
       description,
       website,
       location,
-      logo,
+      logo: logoUrl,
       userId: req.user._id,
     });
 
