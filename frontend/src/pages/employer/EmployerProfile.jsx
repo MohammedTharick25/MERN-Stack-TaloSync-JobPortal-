@@ -3,10 +3,10 @@ import { useAuth } from "../../context/AuthContext";
 import api from "../../api/axios";
 import DashboardLayout from "../../layouts/DashboardLayout";
 import { toast } from "react-toastify";
+import { getImageUrl } from "../../utils/getImageUrl";
 
 const EmployerProfile = () => {
   const { user, updateUser } = useAuth();
-  const BACKEND_URL = "http://localhost:4000";
   const [loading, setLoading] = useState(false);
   const logoInputRef = useRef(null);
 
@@ -136,9 +136,7 @@ const EmployerProfile = () => {
                 <img
                   src={
                     photoPreview ||
-                    (user.profile?.profilePhoto
-                      ? `${BACKEND_URL}/${user.profile.profilePhoto}`
-                      : `https://ui-avatars.com/api/?name=${user.fullName}`)
+                    getImageUrl(user.profile?.profilePhoto, user.fullName)
                   }
                   className="w-24 h-24 rounded-full object-cover border-4 border-blue-50 shadow-sm"
                   alt="Profile"
@@ -197,7 +195,10 @@ const EmployerProfile = () => {
                 >
                   {logoPreview || companyData.logo ? (
                     <img
-                      src={logoPreview || `${BACKEND_URL}/${companyData.logo}`}
+                      src={
+                        logoPreview ||
+                        getImageUrl(companyData.logo, companyData.name)
+                      }
                       className="w-full h-full object-contain"
                       alt="Logo"
                     />

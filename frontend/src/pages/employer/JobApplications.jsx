@@ -3,9 +3,9 @@ import { useParams } from "react-router-dom";
 import api from "../../api/axios";
 import DashboardLayout from "../../layouts/DashboardLayout";
 import { toast } from "react-toastify";
+import { getImageUrl } from "../../utils/getImageUrl";
 
 const JobApplications = () => {
-  const BACKEND_URL = "http://localhost:4000";
   const { jobId } = useParams();
   const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -79,14 +79,9 @@ const JobApplications = () => {
                   <td className="p-4 text-blue-600">
                     {app.applicant.profile?.resume ? (
                       <a
-                        href={
-                          app.applicant.profile.resume.startsWith("http")
-                            ? app.applicant.profile.resume
-                            : `${BACKEND_URL}/${app.applicant.profile.resume}`
-                        }
+                        href={getImageUrl(app.applicant.profile.resume)}
                         target="_blank"
                         rel="noreferrer"
-                        download
                         className="text-blue-600 font-bold underline"
                       >
                         View Resume
