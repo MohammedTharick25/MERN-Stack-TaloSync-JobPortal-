@@ -198,18 +198,31 @@ export const updateProfilePhoto = async (req, res) => {
     if (!req.file)
       return res.status(400).json({ message: "No photo uploaded" });
 
+    // 1. Find the user
     const user = await User.findById(req.user._id);
 
-    // FIX: Convert backslashes to forward slashes for the URL
+    // 2. Update photo path
     const photoUrl = `/${req.file.path.replace(/\\/g, "/")}`;
-
     user.profile.profilePhoto = photoUrl;
     await user.save();
 
+    // 3. FETCH THE USER AGAIN with company populated or just send the ID
+    // This is the CRITICAL fix
+    const updatedUser = await User.findById(req.user._id);
+
     res.status(200).json({
       message: "Photo updated successfully",
-      photoUrl: photoUrl, // Return the clean URL
-      user,
+      photoUrl: photoUrl,
+      user: {
+        id: updatedUser._id,
+        fullName: updatedUser.fullName,
+        email: updatedUser.email,
+        role: updatedUser.role,
+        phoneNumber: updatedUser.phoneNumber,
+        profile: updatedUser.profile,
+        // Ensure company ID is preserved!
+        company: updatedUser.company || updatedUser.profile?.company || null,
+      },
     });
   } catch (error) {
     console.error(error);
