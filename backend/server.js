@@ -10,6 +10,8 @@ import path from "path";
 import cors from "cors";
 import { fileURLToPath } from "url";
 
+import bcrypt from "bcryptjs";
+
 config();
 
 const __filename = fileURLToPath(import.meta.url);
@@ -26,6 +28,7 @@ const allowedOrigins = [
   "https://talosync.onrender.com",
 ];
 
+
 app.use(
   cors({
     origin: function (origin, callback) {
@@ -39,6 +42,10 @@ app.use(
   }),
 );
 
+// FRONTEND STATIC FILES
+const frontendPath = path.join(process.cwd(), "frontend", "dist");
+app.use(express.static(frontendPath));
+
 // Serve uploads folder (using process.cwd() to ensure it finds it from root)
 app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
@@ -49,12 +56,10 @@ app.use("/api/jobs", jobRoutes);
 app.use("/api/applications", applicationRoutes);
 app.use("/api/admin", adminRoutes);
 
-// FRONTEND STATIC FILES
-const frontendPath = path.join(process.cwd(), "frontend", "dist");
-app.use(express.static(frontendPath));
+
 
 // FIX: Express 5 catch-all syntax
-app.get("*path", (req, res) => {
+app.get("*", (req, res) => {
   res.sendFile(path.join(frontendPath, "index.html"));
 });
 
