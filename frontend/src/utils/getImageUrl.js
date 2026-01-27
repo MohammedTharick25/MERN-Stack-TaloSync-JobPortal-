@@ -1,15 +1,15 @@
-export const getImageUrl = (path, name = "User") => {
-  if (!path)
-    return `https://ui-avatars.com/api/?name=${name}&background=random`;
+export const getImageUrl = (path, name) => {
+  if (!path) {
+    return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=random`;
+  }
 
-  if (path.startsWith("http") && !path.includes("localhost:4000")) {
+  // If it's a Cloudinary link (starts with http), return it as is
+  if (path.startsWith("http")) {
     return path;
   }
 
-  // Remove localhost and fix backslashes for Render (Linux)
-  const cleanPath = path
-    .replace("http://localhost:4000", "")
-    .replace(/\\/g, "/");
-
-  return cleanPath.startsWith("/") ? cleanPath : `/${cleanPath}`;
+  // Fallback for any old local data still in your database
+  const backendUrl =
+    import.meta.env.VITE_API_URL || "https://talosync.onrender.com";
+  return `${backendUrl}${path.startsWith("/") ? "" : "/"}${path}`;
 };
