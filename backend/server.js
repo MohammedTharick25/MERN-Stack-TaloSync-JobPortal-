@@ -61,7 +61,7 @@ app.get("*path", (req, res) => {
 mongoose
   .connect(process.env.MONGODB_URI)
   .then(() =>
-    app.listen(process.env.PORT || 4000, () => {
+    app.listen(process.env.PORT || 4000, "0.0.0.0", () => {
       console.log(
         `MongoDB is Connected && Server is running on port ${process.env.PORT || 3000}`,
       );
