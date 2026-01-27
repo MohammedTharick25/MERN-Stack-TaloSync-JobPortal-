@@ -14,14 +14,21 @@ cloudinary.config({
 
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
-  params: {
-    folder: "job_portal_assets",
-    // "auto" is critical: it allows images (logos/photos) AND documents (PDF resumes)
-    resource_type: "auto",
-    allowed_formats: ["jpg", "png", "jpeg", "pdf"],
+  params: async (req, file) => {
+    // Determine the type based on the file
+    const isPDF = file.mimetype === 'application/pdf';
+    
+    return {
+      folder: "job_portal_assets",
+      // Force 'raw' for PDFs so they are treated as documents, not images
+      resource_type: isPDF ? "raw" : "image", 
+      format: isPDF ? "pdf" : undefined, // explicitly set pdf format
+      public_id: `${Date.now()}-${file.originalname.split('.')[0]}`,
+    };
   },
 });
 
 const upload = multer({ storage });
 
 export default upload;
+
