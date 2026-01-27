@@ -132,27 +132,23 @@ export const loginUser = async (req, res) => {
  */
 export const uploadResume = async (req, res) => {
   try {
-    if (!req.file) {
-      return res.status(400).json({ message: "No file uploaded" });
-    }
+    if (!req.file) return res.status(400).json({ message: "No file uploaded" });
 
     const user = await User.findById(req.user._id);
 
-    // Normalize the path
-    const resumeUrl = `/${req.file.path.replace(/\\/g, "/")}`;
+    // FIX: Cloudinary gives the full URL in req.file.path
+    const resumeUrl = req.file.path;
 
     user.profile.resume = resumeUrl;
     user.profile.resumeOriginalName = req.file.originalname;
 
     await user.save();
 
-    // FIXED: You MUST return the resumeUrl so the frontend can update the state
     res.status(200).json({
       message: "Resume uploaded successfully",
-      resumeUrl: resumeUrl, // This matches Profile.jsx
+      resumeUrl: resumeUrl,
     });
   } catch (error) {
-    console.error("Upload Resume Error:", error);
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -198,34 +194,22 @@ export const updateProfilePhoto = async (req, res) => {
     if (!req.file)
       return res.status(400).json({ message: "No photo uploaded" });
 
-    // 1. Find the user
     const user = await User.findById(req.user._id);
 
-    // 2. Update photo path
-    const photoUrl = `/${req.file.path.replace(/\\/g, "/")}`;
+    // FIX: Directly use the path (the https link from Cloudinary)
+    const photoUrl = req.file.path;
+
     user.profile.profilePhoto = photoUrl;
     await user.save();
 
-    // 3. FETCH THE USER AGAIN with company populated or just send the ID
-    // This is the CRITICAL fix
     const updatedUser = await User.findById(req.user._id);
 
     res.status(200).json({
       message: "Photo updated successfully",
       photoUrl: photoUrl,
-      user: {
-        id: updatedUser._id,
-        fullName: updatedUser.fullName,
-        email: updatedUser.email,
-        role: updatedUser.role,
-        phoneNumber: updatedUser.phoneNumber,
-        profile: updatedUser.profile,
-        // Ensure company ID is preserved!
-        company: updatedUser.company || updatedUser.profile?.company || null,
-      },
+      user: updatedUser,
     });
   } catch (error) {
-    console.error(error);
     res.status(500).json({ message: "Server error" });
   }
 };

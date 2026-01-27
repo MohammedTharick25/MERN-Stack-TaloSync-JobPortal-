@@ -1,39 +1,27 @@
-// backend/middleware/multer.js
+import { v2 as cloudinary } from "cloudinary";
+import { CloudinaryStorage } from "multer-storage-cloudinary";
 import multer from "multer";
-// import path from "path";
-import fs from "fs";
+import dotenv from "dotenv";
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    let folder = "uploads/others"; // default
+dotenv.config();
 
-    if (file.fieldname === "resume") {
-      folder = "uploads/resumes";
-    } else if (file.fieldname === "logo") {
-      folder = "uploads/logos"; // Dedicated folder for company logos
-    } else if (file.fieldname === "profilePhoto") {
-      folder = "uploads/photos";
-    }
+// Configuration
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
-    if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
-    cb(null, folder);
-  },
-  filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-${file.originalname}`);
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: "job_portal_assets",
+    // "auto" is critical: it allows images (logos/photos) AND documents (PDF resumes)
+    resource_type: "auto",
+    allowed_formats: ["jpg", "png", "jpeg", "pdf"],
   },
 });
 
-const fileFilter = (req, file, cb) => {
-  if (file.fieldname === "resume") {
-    if (file.mimetype === "application/pdf") cb(null, true);
-    else cb(new Error("Only PDFs allowed for resumes"), false);
-  } else if (file.fieldname === "logo" || file.fieldname === "profilePhoto") {
-    if (file.mimetype.startsWith("image/")) cb(null, true);
-    else cb(new Error("Only images allowed"), false);
-  } else {
-    cb(null, true);
-  }
-};
+const upload = multer({ storage });
 
-const upload = multer({ storage, fileFilter });
 export default upload;
