@@ -31,6 +31,12 @@ const JobApplications = () => {
     try {
       await api.patch(`/applications/${appId}/status`, { status });
       toast.success(`Application ${status}!`);
+
+      setApplications((prevApplications) =>
+        prevApplications.map((app) =>
+          app._id === appId ? { ...app, status: status } : app,
+        ),
+      );
       fetchApplications(); // This still works perfectly
     } catch (err) {
       toast.error(err.response?.data?.message || "Error updating status");
