@@ -77,9 +77,6 @@ const MyApplications = () => {
                   <th className="p-5 text-sm font-bold text-gray-400 uppercase tracking-wider">
                     Status
                   </th>
-                  <th className="p-5 text-sm font-bold text-gray-400 uppercase tracking-wider text-right">
-                    Action
-                  </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
@@ -125,23 +122,6 @@ const MyApplications = () => {
                       >
                         {app.status}
                       </span>
-                    </td>
-                    <td className="p-5 text-right">
-                      <button className="text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                        <svg
-                          className="w-6 h-6"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M9 5l7 7-7 7"
-                          />
-                        </svg>
-                      </button>
                     </td>
                   </tr>
                 ))}
