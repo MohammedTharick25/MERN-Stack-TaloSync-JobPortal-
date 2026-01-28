@@ -33,7 +33,7 @@ const Login = () => {
       <div className="hidden lg:flex lg:w-1/2 bg-blue-600 relative overflow-hidden flex-col justify-center p-12">
         <div className="absolute top-10 left-10">
           <h1 className="text-3xl font-black text-white tracking-tighter">
-            JobPortal
+            TaloSync
           </h1>
         </div>
         <div className="relative z-10">

@@ -9,7 +9,6 @@ const DashboardLayout = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  // const BACKEND_URL = "http://localhost:4000";
 
   const profileImg = getImageUrl(user?.profile?.profilePhoto, user?.fullName);
 
@@ -143,6 +142,14 @@ const DashboardLayout = ({ children }) => {
                 }
               >
                 <span>📄</span> My Applications
+              </NavLink>
+              <NavLink
+                to="/candidate/saved-jobs"
+                className={({ isActive }) =>
+                  `flex items-center gap-3 p-3 rounded-xl font-medium ${isActive ? "bg-blue-600 text-white" : "text-gray-600 dark:text-gray-400 hover:bg-gray-100"}`
+                }
+              >
+                <span>❤️</span> Saved Jobs
               </NavLink>
             </>
           )}

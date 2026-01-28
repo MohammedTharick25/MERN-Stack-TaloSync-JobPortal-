@@ -37,7 +37,7 @@ const Register = () => {
       {/* BRANDING SIDE */}
       <div className="hidden lg:flex lg:w-2/5 bg-gray-900 relative overflow-hidden flex-col justify-center p-12">
         <div className="absolute top-10 left-10 text-white font-black text-2xl">
-          JobPortal
+          TaloSync
         </div>
         <div className="z-10">
           <h2 className="text-4xl font-bold text-white mb-4">
