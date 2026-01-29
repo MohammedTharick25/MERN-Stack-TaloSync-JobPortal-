@@ -103,7 +103,7 @@ cd backend
 
 npm install
 
----
+
 
 **Create a .env file inside backend with**
 
@@ -115,6 +115,7 @@ JWT_SECRET=your_jwt_secret
 
 @ any other env variables your backend uses
 
+---
 
 3. **Frontend Setup**
 
