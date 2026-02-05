@@ -66,12 +66,33 @@ export const createJob = async (req, res) => {
       role: "candidate",
     });
 
-    // Send emails to all of them
-    subscribers.forEach(async (subscriber) => {
-      await sendEmail({
+    // // Send emails to all of them
+    // subscribers.forEach(async (subscriber) => {
+    //   await sendEmail({
+    //     to: subscriber.email,
+    //     subject: `New Job Opportunity: ${job.title}`,
+    //     text: `A new ${job.jobType} position for ${job.title} has been posted. Check it out!`,
+    //   });
+    // });
+
+    // 3. Prepare all email promises
+    const emailPromises = subscribers.map((subscriber) =>
+      sendEmail({
         to: subscriber.email,
         subject: `New Job Opportunity: ${job.title}`,
         text: `A new ${job.jobType} position for ${job.title} has been posted. Check it out!`,
+      }),
+    );
+
+    // 4. Fire them off in the background (Don't 'await' this so user gets fast response)
+    Promise.allSettled(emailPromises).then((results) => {
+      results.forEach((result, index) => {
+        if (result.status === "rejected") {
+          console.error(
+            `Email failed for ${subscribers[index].email}:`,
+            result.reason.message,
+          );
+        }
       });
     });
 
