@@ -2,6 +2,8 @@ import Job from "../models/Job.js";
 import Company from "../models/Company.js";
 import Application from "../models/Application.js";
 import mongoose from "mongoose";
+import sendEmail from "../utils/sendEmail.js";
+import User from "../models/User.js";
 
 /**
  * @desc    Create a job
