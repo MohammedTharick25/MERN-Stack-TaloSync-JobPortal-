@@ -253,20 +253,11 @@ export const toggleJobAlerts = async (req, res) => {
 
     // --- ADD THIS LOGIC ---
     if (user.profile.jobAlerts) {
-      try {
-        await sendEmail({
-          to: user.email,
-          subject: "Job Alerts Enabled",
-          text: `Hi ${user.fullName}, you have successfully enabled job alerts. We will notify you when new jobs are posted!`,
-        });
-      } catch (emailErr) {
-        console.error(
-          "Email failed to send, but database was updated:",
-          emailErr,
-        );
-        // We don't necessarily want to return a 500 error if the DB update worked
-        // but the email failed, but we should log it.
-      }
+      sendEmail({
+        to: user.email,
+        subject: "Job Alerts Enabled",
+        text: `Hi ${user.fullName}, job alerts are now active!`,
+      }).catch((err) => console.error("Background Email Error:", err));
     }
 
     res.status(200).json({
