@@ -1,7 +1,7 @@
 import User from "../models/User.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import Company from "../models/Company.js";
+import { sendEmail } from "../utils/sendEmail.js";
 
 /**
  * @desc    Create/Register a new user
@@ -136,7 +136,7 @@ export const uploadResume = async (req, res) => {
 
     const user = await User.findById(req.user._id);
 
-    // FIX: Cloudinary gives the full URL in req.file.path
+    // Cloudinary gives the full URL in req.file.path
     const resumeUrl = req.file.path;
 
     user.profile.resume = resumeUrl;
@@ -246,11 +246,33 @@ export const toggleSaveJob = async (req, res) => {
 export const toggleJobAlerts = async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
+
+    // Toggle the status
     user.profile.jobAlerts = !user.profile.jobAlerts;
     await user.save();
-    res
-      .status(200)
-      .json({ message: "Alerts updated", jobAlerts: user.profile.jobAlerts });
+
+    // --- ADD THIS LOGIC ---
+    if (user.profile.jobAlerts) {
+      try {
+        await sendEmail({
+          to: user.email,
+          subject: "Job Alerts Enabled",
+          text: `Hi ${user.fullName}, you have successfully enabled job alerts. We will notify you when new jobs are posted!`,
+        });
+      } catch (emailErr) {
+        console.error(
+          "Email failed to send, but database was updated:",
+          emailErr,
+        );
+        // We don't necessarily want to return a 500 error if the DB update worked
+        // but the email failed, but we should log it.
+      }
+    }
+
+    res.status(200).json({
+      message: "Alerts updated",
+      jobAlerts: user.profile.jobAlerts,
+    });
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }

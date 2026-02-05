@@ -58,6 +58,21 @@ export const createJob = async (req, res) => {
       created_by: req.user._id,
     });
 
+    // Find all candidates who want alerts
+    const subscribers = await User.find({
+      "profile.jobAlerts": true,
+      role: "candidate",
+    });
+
+    // Send emails to all of them
+    subscribers.forEach(async (subscriber) => {
+      await sendEmail({
+        to: subscriber.email,
+        subject: `New Job Opportunity: ${job.title}`,
+        text: `A new ${job.jobType} position for ${job.title} has been posted. Check it out!`,
+      });
+    });
+
     res.status(201).json({
       message: "Job created successfully",
       job,
