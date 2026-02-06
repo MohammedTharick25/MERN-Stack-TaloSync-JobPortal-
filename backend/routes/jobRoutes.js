@@ -3,6 +3,8 @@ import {
   getAllJobs,
   getJobById,
   getEmployerJobs,
+  updateJob,
+  deleteJob,
 } from "../controllers/jobController.js";
 import { protect } from "../middleware/authMiddleware.js";
 import { authorizeRoles } from "../middleware/roleMiddleware.js";
