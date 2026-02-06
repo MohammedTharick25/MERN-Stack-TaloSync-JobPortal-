@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../../api/axios";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const JobList = () => {
   const [jobs, setJobs] = useState([]);
@@ -36,6 +37,37 @@ const JobList = () => {
       </div>
     );
   }
+
+  const handleDelete = async (jobId) => {
+    if (
+      window.confirm(
+        "Are you sure you want to delete this job posting? This action cannot be undone.",
+      )
+    ) {
+      try {
+        await api.delete(`/jobs/${jobId}`);
+        setJobs(jobs.filter((job) => job._id !== jobId));
+        toast.success("Job deleted successfully");
+      } catch (err) {
+        toast.error(err.response?.data?.message || "Failed to delete job");
+      }
+    }
+  };
+
+  const toggleJobStatus = async (jobId, currentStatus) => {
+    try {
+      const res = await api.put(`/jobs/${jobId}`, { isOpen: !currentStatus });
+      setJobs(
+        jobs.map((j) =>
+          j._id === jobId ? { ...j, isOpen: res.data.job.isOpen } : j,
+        ),
+      );
+      toast.success(`Job ${!currentStatus ? "Opened" : "Closed"} successfully`);
+    } catch (err) {
+      toast.error("Failed to update status");
+      console.error(err);
+    }
+  };
 
   return (
     <div className="mt-10">
@@ -119,11 +151,27 @@ const JobList = () => {
                 Posted on {new Date(job.createdAt).toLocaleDateString()}
               </p>
               <div className="flex gap-4">
-                <button className="text-[10px] font-bold text-gray-400 hover:text-blue-600 transition-colors uppercase">
+                <button
+                  className="text-[10px] font-bold text-gray-400 hover:text-blue-600 transition-colors uppercase"
+                  onClick={() => navigate(`/employer/jobs/edit/${job._id}`)}
+                >
                   Edit Post
                 </button>
-                <button className="text-[10px] font-bold text-gray-400 hover:text-red-600 transition-colors uppercase">
-                  Close Job
+                <button
+                  onClick={() => toggleJobStatus(job._id, job.isOpen)}
+                  className={`text-[10px] font-bold transition-colors uppercase ${
+                    job.isOpen
+                      ? "text-gray-400 hover:text-orange-600"
+                      : "text-green-600"
+                  }`}
+                >
+                  {job.isOpen ? "Close Job" : "Reopen Job"}
+                </button>
+                <button
+                  onClick={() => handleDelete(job._id)}
+                  className="text-[10px] font-bold text-gray-400 hover:text-red-600 transition-colors uppercase"
+                >
+                  Delete
                 </button>
               </div>
             </div>

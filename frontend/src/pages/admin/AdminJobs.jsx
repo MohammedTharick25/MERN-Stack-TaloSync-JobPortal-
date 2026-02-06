@@ -112,7 +112,6 @@ const AdminJobs = () => {
               >
                 <div className="flex items-center gap-4 w-full md:w-auto">
                   {/* COMPANY LOGO */}
-                  {/* COMPANY LOGO */}
                   <div className="w-14 h-14 bg-gray-50 dark:bg-gray-700 rounded-xl flex items-center justify-center overflow-hidden border border-gray-100 dark:border-gray-600 shrink-0 shadow-sm">
                     {job.company?.logo ? (
                       <img
