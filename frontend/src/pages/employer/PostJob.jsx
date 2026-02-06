@@ -120,10 +120,10 @@ const PostJob = () => {
             onChange={handleChange}
             className="w-full p-2 border rounded mt-1 dark:text-white"
           >
-            <option>Full-time</option>
-            <option>Part-time</option>
-            <option>Internship</option>
-            <option>Contract</option>
+            <option className="dark:text-black">Full-time</option>
+            <option className="dark:text-black">Part-time</option>
+            <option className="dark:text-black">Internship</option>
+            <option className="dark:text-black">Contract</option>
           </select>
         </div>
 
