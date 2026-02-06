@@ -1,19 +1,29 @@
-import { Resend } from "resend";
-
-// Add RESEND_API_KEY to your Render Environment Variables
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 export const sendEmail = async (options) => {
   try {
-    const data = await resend.emails.send({
-      from: "JobPortal <onboarding@resend.dev>", // Use this default sender for testing
-      to: options.to,
-      subject: options.subject,
-      text: options.text,
+    const response = await fetch("https://api.brevo.com/v3/smtp/email", {
+      method: "POST",
+      headers: {
+        accept: "application/json",
+        "api-key": process.env.BREVO_API_KEY,
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        sender: {
+          name: "Job Portal",
+          email: "talosync@gmail.com", // Use the email you used to sign up for Brevo
+        },
+        to: [{ email: options.to }],
+        subject: options.subject,
+        textContent: options.text,
+      }),
     });
+
+    const data = await response.json();
+    if (!response.ok) {
+      console.error("Brevo API Error:", data);
+    }
     return data;
   } catch (error) {
-    console.error("Resend Error:", error);
-    throw error;
+    console.error("Email processing error:", error);
   }
 };

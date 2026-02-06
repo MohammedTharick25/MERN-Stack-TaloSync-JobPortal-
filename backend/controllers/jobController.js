@@ -66,35 +66,29 @@ export const createJob = async (req, res) => {
       role: "candidate",
     });
 
-    // // Send emails to all of them
-    // subscribers.forEach(async (subscriber) => {
-    //   await sendEmail({
-    //     to: subscriber.email,
-    //     subject: `New Job Opportunity: ${job.title}`,
-    //     text: `A new ${job.jobType} position for ${job.title} has been posted. Check it out!`,
-    //   });
-    // });
+    console.log(`Found ${subscribers.length} candidates with alerts enabled.`);
 
-    // 3. Prepare all email promises
-    const emailPromises = subscribers.map((subscriber) =>
-      sendEmail({
-        to: subscriber.email,
-        subject: `New Job Opportunity: ${job.title}`,
-        text: `A new ${job.jobType} position for ${job.title} has been posted. Check it out!`,
-      }),
-    );
-
-    // 4. Fire them off in the background (Don't 'await' this so user gets fast response)
-    Promise.allSettled(emailPromises).then((results) => {
-      results.forEach((result, index) => {
-        if (result.status === "rejected") {
-          console.error(
-            `Email failed for ${subscribers[index].email}:`,
-            result.reason.message,
-          );
-        }
+    if (subscribers.length > 0) {
+      const emailPromises = subscribers.map((sub) => {
+        console.log(`Attempting to send email to: ${sub.email}`);
+        return sendEmail({
+          to: sub.email,
+          subject: "New Job Alert!",
+          text: `A new job has been posted: ${req.body.title}. Check it out now!`,
+        });
       });
-    });
+
+      // Fire in background
+      Promise.allSettled(emailPromises).then((results) => {
+        results.forEach((res, i) => {
+          if (res.status === "fulfilled") {
+            console.log(`✅ Success for ${subscribers[i].email}`);
+          } else {
+            console.error(`❌ Failed for ${subscribers[i].email}:`, res.reason);
+          }
+        });
+      });
+    }
 
     res.status(201).json({
       message: "Job created successfully",
