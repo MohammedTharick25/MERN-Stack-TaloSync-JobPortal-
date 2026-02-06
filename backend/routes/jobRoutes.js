@@ -3,7 +3,6 @@ import {
   getAllJobs,
   getJobById,
   getEmployerJobs,
-  updateJob,
   deleteJob,
 } from "../controllers/jobController.js";
 import { protect } from "../middleware/authMiddleware.js";
@@ -24,6 +23,5 @@ router.get("/:id", getJobById);
 // Employer-only
 router.post("/", protect, authorizeRoles("employer"), createJob);
 
-router.put("/:id", protect, authorizeRoles("employer"), updateJob);
 router.delete("/:id", protect, authorizeRoles("employer"), deleteJob);
 export default router;

@@ -224,39 +224,6 @@ export const getEmployerJobs = async (req, res) => {
 };
 
 /**
- * @desc    Update a job
- * @route   PUT /api/jobs/:id
- * @access  Private (Employer only)
- */
-export const updateJob = async (req, res) => {
-  try {
-    const { id } = req.params;
-    let job = await Job.findById(id);
-
-    if (!job) {
-      return res.status(404).json({ message: "Job not found" });
-    }
-
-    // Check ownership
-    if (job.created_by.toString() !== req.user._id.toString()) {
-      return res
-        .status(401)
-        .json({ message: "Not authorized to update this job" });
-    }
-
-    job = await Job.findByIdAndUpdate(id, req.body, {
-      new: true,
-      runValidators: true,
-    });
-
-    res.status(200).json({ success: true, job });
-  } catch (error) {
-    console.error("Update Job Error:", error);
-    res.status(500).json({ message: "Server error" });
-  }
-};
-
-/**
  * @desc    Delete a job
  * @route   DELETE /api/jobs/:id
  * @access  Private (Employer only)
