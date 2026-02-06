@@ -253,10 +253,31 @@ export const toggleJobAlerts = async (req, res) => {
 
     // --- ADD THIS LOGIC ---
     if (user.profile.jobAlerts) {
+      // Use user's photo or a default professional avatar
+      const profileImg =
+        user.profile.profilePhoto ||
+        "https://ui-avatars.com/api/?name=" + user.fullName;
+
       sendEmail({
         to: user.email,
         subject: "Job Alerts Enabled",
-        text: `Hi ${user.fullName}, job alerts are now active!`,
+        html: `
+      <div style="font-family: sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; padding: 20px; border-radius: 15px;">
+        <div style="text-align: center;">
+          <img src="${profileImg}" alt="Profile" style="width: 80px; hieght: 80px; border-radius: 50%; object-fit: cover; border: 3px solid #3b82f6;">
+          <h2 style="color: #111827;">Hello, ${user.fullName}!</h2>
+        </div>
+        <p style="color: #4b5563; line-height: 1.6;">
+          This is to confirm that your <b>Job Alerts</b> are now active. You'll be the first to know when new roles are posted.
+        </p>
+        <div style="background: #f3f4f6; padding: 15px; border-radius: 10px; text-align: center; margin: 20px 0;">
+          <p style="margin: 0; font-weight: bold; color: #1f2937;">Status: Active 🔔</p>
+        </div>
+        <p style="font-size: 12px; color: #9ca3af; text-align: center;">
+          Best regards,<br>The Job Portal Team
+        </p>
+      </div>
+    `,
       }).catch((err) => console.error("Background Email Error:", err));
     }
 
