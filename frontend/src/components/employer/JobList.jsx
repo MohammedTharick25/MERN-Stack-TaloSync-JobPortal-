@@ -152,12 +152,6 @@ const JobList = () => {
               </p>
               <div className="flex gap-4">
                 <button
-                  className="text-[10px] font-bold text-gray-400 hover:text-blue-600 transition-colors uppercase"
-                  onClick={() => navigate(`/employer/jobs/edit/${job._id}`)}
-                >
-                  Edit Post
-                </button>
-                <button
                   onClick={() => toggleJobStatus(job._id, job.isOpen)}
                   className={`text-[10px] font-bold transition-colors uppercase ${
                     job.isOpen
