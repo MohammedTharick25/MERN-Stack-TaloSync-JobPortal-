@@ -9,8 +9,7 @@ import adminRoutes from "./routes/adminRoutes.js";
 import path from "path";
 import cors from "cors";
 import { fileURLToPath } from "url";
-
-import bcrypt from "bcryptjs";
+import { getDynamicSitemap } from "./controllers/sitemapController.js";
 
 config();
 
@@ -28,7 +27,6 @@ const allowedOrigins = [
   "https://talosync.onrender.com",
 ];
 
-
 app.use(
   cors({
     origin: function (origin, callback) {
@@ -41,6 +39,9 @@ app.use(
     credentials: true,
   }),
 );
+
+// 1. DYNAMIC SITEMAP ROUTE (Put this before static files)
+app.get("/sitemap.xml", getDynamicSitemap);
 
 // FRONTEND STATIC FILES
 const frontendPath = path.join(process.cwd(), "frontend", "dist");
@@ -55,8 +56,6 @@ app.use("/api/companies", companyRoutes);
 app.use("/api/jobs", jobRoutes);
 app.use("/api/applications", applicationRoutes);
 app.use("/api/admin", adminRoutes);
-
-
 
 // FIX: Express 5 catch-all syntax
 app.get("*", (req, res) => {
