@@ -104,14 +104,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route
-            path="/jobs/:id"
-            element={
-              <ProtectedRoute roles={["candidate"]}>
-                <JobDetail />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/jobs/:id" element={<JobDetail />} />
 
           {/* --- EMPLOYER ROUTES --- */}
           <Route
