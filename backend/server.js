@@ -40,6 +40,21 @@ app.use(
   }),
 );
 
+app.use(
+  express.static(frontendPath, {
+    maxAge: "1d",
+    setHeaders: (res, path) => {
+      if (
+        path.endsWith(".png") ||
+        path.endsWith(".jpg") ||
+        path.endsWith(".ico")
+      ) {
+        res.setHeader("Cache-Control", "public, max-age=86400");
+      }
+    },
+  }),
+);
+
 // 1. DYNAMIC SITEMAP ROUTE (Put this before static files)
 app.get("/sitemap.xml", getDynamicSitemap);
 

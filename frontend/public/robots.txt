@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
-Sitemap: https://yourdomain.com/sitemap.xml
+Allow: /Talo-Sync-logo.png
+Sitemap: https://talosync.onrender.com/sitemap.xml
