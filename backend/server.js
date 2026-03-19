@@ -27,6 +27,10 @@ const allowedOrigins = [
   "https://talosync.onrender.com",
 ];
 
+// FRONTEND STATIC FILES
+const frontendPath = path.join(process.cwd(), "frontend", "dist");
+app.use(express.static(frontendPath));
+
 app.use(
   cors({
     origin: function (origin, callback) {
@@ -57,10 +61,6 @@ app.use(
 
 // 1. DYNAMIC SITEMAP ROUTE (Put this before static files)
 app.get("/sitemap.xml", getDynamicSitemap);
-
-// FRONTEND STATIC FILES
-const frontendPath = path.join(process.cwd(), "frontend", "dist");
-app.use(express.static(frontendPath));
 
 // Serve uploads folder (using process.cwd() to ensure it finds it from root)
 app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
