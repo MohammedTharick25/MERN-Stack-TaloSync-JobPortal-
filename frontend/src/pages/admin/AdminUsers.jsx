@@ -123,14 +123,17 @@ const AdminUsers = () => {
           />
         </div>
 
-        <div className="p-4">
+        <div className="relative">
           <input
             type="text"
-            placeholder="Search..."
-            className="w-full p-2 border rounded dark:text-gray-300"
+            placeholder="Search users by name or email..."
+            className="w-full pl-11 pr-4 py-2.5 rounded-xl border bg-gray-50 dark:bg-gray-800 focus:ring-2 ring-blue-500 outline-none transition dark:text-white"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
+          <span className="absolute left-3 top-2.5 text-gray-400 text-sm">
+            🔍
+          </span>
         </div>
       </div>
 
