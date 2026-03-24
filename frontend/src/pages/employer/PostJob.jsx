@@ -92,6 +92,7 @@ const PostJob = () => {
             name="title"
             value={form.title}
             onChange={handleChange}
+            placeholder="eg: Software Developer"
             required
             className="w-full p-2 border rounded mt-1 dark:text-white"
           />
@@ -103,6 +104,7 @@ const PostJob = () => {
           </label>
           <input
             name="location"
+            placeholder="eg: India"
             value={form.location}
             onChange={handleChange}
             required
@@ -129,13 +131,14 @@ const PostJob = () => {
 
         <div>
           <label className="text-sm font-medium dark:text-gray-300">
-            Salary
+            Salary Per Annum (₹)
           </label>
           <input
             type="number"
             name="salary"
             value={form.salary}
             onChange={handleChange}
+            placeholder="eg: 300000"
             required
             className="w-full p-2 border rounded mt-1 dark:text-white"
           />
@@ -148,6 +151,7 @@ const PostJob = () => {
           <input
             type="number"
             name="experienceLevel"
+            placeholder="eg: 1"
             value={form.experienceLevel}
             onChange={handleChange}
             required
@@ -161,7 +165,7 @@ const PostJob = () => {
           </label>
           <input
             name="requirements"
-            placeholder="React, Node, MongoDB"
+            placeholder="eg: React, Node, MongoDB"
             value={form.requirements}
             onChange={handleChange}
             className="w-full p-2 border rounded mt-1 dark:text-white"
@@ -174,6 +178,7 @@ const PostJob = () => {
           </label>
           <textarea
             name="description"
+            placeholder="eg: This job requires..."
             rows="4"
             value={form.description}
             onChange={handleChange}

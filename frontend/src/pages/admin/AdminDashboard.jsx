@@ -196,7 +196,7 @@ const AdminDashboard = () => {
                   </div>
                   <div className="text-right">
                     <p className="text-sm font-bold text-green-600">
-                      ${job.salary?.toLocaleString()}
+                      ₹{job.salary?.toLocaleString()}
                     </p>
                     <p className="text-[10px] text-gray-400">{job.jobType}</p>
                   </div>

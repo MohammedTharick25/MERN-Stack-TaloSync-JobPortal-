@@ -157,7 +157,7 @@ const AdminJobs = () => {
                 <div className="flex items-center gap-4 mt-4 md:mt-0 w-full md:w-auto justify-end">
                   <div className="text-right hidden sm:block">
                     <p className="text-xs font-bold dark:text-white">
-                      ${job.salary?.toLocaleString()}
+                      ₹{job.salary?.toLocaleString()}
                     </p>
                     <p className="text-[10px] text-gray-400 uppercase tracking-widest">
                       {job.jobType}

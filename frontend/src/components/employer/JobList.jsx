@@ -108,7 +108,7 @@ const JobList = () => {
                   </span>
                   <span className="hidden md:block">•</span>
                   <span className="flex items-center gap-1">
-                    💰 ${job.salary?.toLocaleString()}
+                    💰 ₹{job.salary?.toLocaleString()}
                   </span>
                   <span className="hidden md:block">•</span>
                   <span className="flex items-center gap-1">

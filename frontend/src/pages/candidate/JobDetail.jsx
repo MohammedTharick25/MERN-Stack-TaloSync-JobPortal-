@@ -151,7 +151,7 @@ const JobDetail = () => {
                     {job.jobType}
                   </span>
                   <span className="bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-3 py-1 rounded-full text-[10px] font-black uppercase">
-                    ${job.salary.toLocaleString()}
+                    ₹{job.salary.toLocaleString()}
                   </span>
                   <span className="bg-pink-300 dark:bg-pink-900/30 text-pink-700 dark:text-pink-400 px-3 py-1 rounded-full text-[10px] font-black uppercase">
                     {job.location}

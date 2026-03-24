@@ -201,7 +201,7 @@ const JobsPage = () => {
             <option value="">All Types</option>
             <option value="Full-time">Full-time</option>
             <option value="Part-time">Part-time</option>
-            <option value="Remote">Remote</option>
+            <option value="Internship">Internship</option>
             <option value="Contract">Contract</option>
           </select>
 
@@ -213,10 +213,10 @@ const JobsPage = () => {
             }
           >
             <option value="">Salary Range (Any)</option>
-            <option value="0-50000">$0 - $50k</option>
-            <option value="50000-100000">$50k - $100k</option>
-            <option value="100000-150000">$100k - $150k</option>
-            <option value="150000">$150k+</option>
+            <option value="0-500000">₹0 - ₹500k</option>
+            <option value="500000-1000000">₹500k - ₹1M</option>
+            <option value="1000000-2000000">₹1M - ₹2M</option>
+            <option value="2000000">₹2M+</option>
           </select>
 
           <select
@@ -286,7 +286,7 @@ const JobsPage = () => {
                     {job.jobType}
                   </span>
                   <span className="text-[10px] font-bold px-2 py-1 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 rounded-md uppercase">
-                    ${job.salary.toLocaleString()}
+                    ₹{job.salary.toLocaleString()}
                   </span>
                 </div>
               </div>

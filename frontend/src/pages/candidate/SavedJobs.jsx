@@ -128,7 +128,7 @@ const SavedJobs = () => {
                         {job.jobType}
                       </span>
                       <span className="text-[10px] font-bold px-2 py-1 bg-green-50 dark:bg-green-900/20 text-green-700 rounded-md uppercase">
-                        ${job.salary?.toLocaleString()}
+                        ₹{job.salary?.toLocaleString()}
                       </span>
                     </div>
                   )}
